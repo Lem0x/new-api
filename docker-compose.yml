@@ -13,6 +13,28 @@ services:
       - SQL_DSN=${SQL_DSN}
       - REDIS_CONN_STRING=${REDIS_CONN_STRING}
       - TZ=Asia/Shanghai
+      - SQL_MAX_IDLE_CONNS=100
+      - SQL_MAX_OPEN_CONNS=1000
+      - SQL_MAX_LIFETIME=60
+      # 同步频率（单位：秒）
+      - SYNC_FREQUENCY=60
+      # 内存缓存启用
+      - MEMORY_CACHE_ENABLED=true
+      # 渠道更新频率（单位：秒）
+      - CHANNEL_UPDATE_FREQUENCY=30
+      # 批量更新启用
+      - BATCH_UPDATE_ENABLED=true
+      # 批量更新间隔（单位：秒）
+      - BATCH_UPDATE_INTERVAL=5
+      # 渠道测试频率（单位：秒）
+      - CHANNEL_TEST_FREQUENCY=600
+      - GET_MEDIA_TOKEN=true
+      # 是否在非流（stream=false）情况下统计图片token
+      - GET_MEDIA_TOKEN_NOT_STREAM=true
+      # 设置 Dify 渠道是否输出工作流和节点信息到客户端
+      # DIFY_DEBUG=true
+      # 设置流式一次回复的超时时间
+      - STREAMING_TIMEOUT=180
     #      - SESSION_SECRET=random_string  # 多机部署时设置，必须修改这个随机字符串！！！！！！！
     #      - NODE_TYPE=slave  # Uncomment for slave node in multi-node deployment
     #      - SYNC_FREQUENCY=60  # Uncomment if regular database syncing is needed
