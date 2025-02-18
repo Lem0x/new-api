@@ -6,7 +6,7 @@ services:
     container_name: new-api
     restart: always
     command: --log-dir /app/logs
-    ports:
+    #ports:
       #- "3009:3000"
     volumes:
       - ./data:/data
