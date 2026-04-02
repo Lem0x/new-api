@@ -67,8 +67,8 @@ services:
       - mysql_data:/var/lib/mysql
     networks:
       - new-api-network
-    ports:
-#      - "3306"  # Uncomment if you need to access MySQL from outside Docker
+    # ports:
+    #  - "3306"  # Uncomment if you need to access MySQL from outside Docker
 
 volumes:
   pg_data:
