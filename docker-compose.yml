@@ -30,17 +30,17 @@ services:
       - TZ=Asia/Shanghai
       - ERROR_LOG_ENABLED=true # 是否启用错误日志记录 (Whether to enable error log recording)
       - BATCH_UPDATE_ENABLED=true  # 是否启用批量更新 (Whether to enable batch update)
-#      - STREAMING_TIMEOUT=300  # 流模式无响应超时时间，单位秒，默认120秒，如果出现空补全可以尝试改为更大值 （Streaming timeout in seconds, default is 120s. Increase if experiencing empty completions）
-#      - SESSION_SECRET=random_string  # 多机部署时设置，必须修改这个随机字符串！！ （multi-node deployment, set this to a random string!!!!!!!）
+#      - STREAMING_TIMEOUT=300  # 流模式无响应超时时间，单位秒，默认120秒，如果出现空补全可以尝试改为更大值
+#      - SESSION_SECRET=random_string  # 多机部署时设置，必须修改这个随机字符串！！ 
 #      - SYNC_FREQUENCY=60  # Uncomment if regular database syncing is needed
-#      - GOOGLE_ANALYTICS_ID=G-XXXXXXXXXX  # Google Analytics 的测量 ID (Google Analytics Measurement ID)
-#      - UMAMI_WEBSITE_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx  # Umami 网站 ID (Umami Website ID)
-#      - UMAMI_SCRIPT_URL=https://analytics.umami.is/script.js  # Umami 脚本 URL，默认为官方地址 (Umami Script URL, defaults to official URL)
-
+#      - GOOGLE_ANALYTICS_ID=G-XXXXXXXXXX  # Google Analytics 的测量 ID
+#      - UMAMI_WEBSITE_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx  # Umami 网站 ID
+#      - UMAMI_SCRIPT_URL=https://analytics.umami.is/script.js  # Umami 脚本 URL
+      - SQL_DSN=root:change_me_to_a_strong_password@tcp(mysql:3306)/new-api?charset=utf8mb4&parseTime=True&loc=Local # MySQL DSN
     depends_on:
       - redis
-      - postgres
-      - mysql  # Uncomment if using MySQL
+      # - postgres  # Commented out since we are using MySQL
+      - mysql       
     networks:
       - new-api-network
     healthcheck:
@@ -56,18 +56,19 @@ services:
     networks:
       - new-api-network
 
- mysql:
-   image: mysql:8.2
-   container_name: mysql
-   restart: always
-   environment:
-     MYSQL_DATABASE: new-api
-   volumes:
-     - mysql_data:/var/lib/mysql
-   networks:
-     - new-api-network
-   ports:
-     - "3306:3306"  # Uncomment if you need to access MySQL from outside Docker
+  mysql:
+    image: mysql:8.2
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: new-api
+      MYSQL_ROOT_PASSWORD: change_me_to_a_strong_password # Required for the container to start
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - new-api-network
+    ports:
+      - "3306:3306"  # Uncomment if you need to access MySQL from outside Docker
 
 volumes:
   pg_data:
