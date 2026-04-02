@@ -1,0 +1,33 @@
+name: Upstream Sync
+
+permissions:
+  contents: write
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # 每天凌晨 0 点自动同步一次 (UTC时间)
+  workflow_dispatch:    # 允许你点击按钮手动触发同步
+
+jobs:
+  sync_latest_from_upstream:
+    runs-on: ubuntu-latest
+    name: Sync latest commits from upstream repo
+
+    steps:
+    - name: Checkout target repo
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Sync upstream changes
+      id: sync
+      uses: a202425/upstream-sync-action@v1.0.0 # 使用开源的同步插件
+      with:
+        upstream_repository: QuantumNous/new-api # 这里填原作者的仓库名
+        upstream_branch: main                    # 原作者的主分支名
+        target_branch: main                      # 你自己的主分支名
+        force: false                             # 如果有冲突不强制覆盖
+
+    - name: Check for errors
+      if: steps.sync.outputs.has_new_commits == 'false'
+      run: echo "No new commits."
