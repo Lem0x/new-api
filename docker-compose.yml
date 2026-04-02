@@ -20,8 +20,8 @@ services:
     container_name: new-api
     restart: always
     command: --log-dir /app/logs
-    ports:
-      - "3002:3000"
+    expose:
+      - "3000"
     volumes:
       - ./data:/data
       - ./logs:/app/logs
@@ -68,7 +68,7 @@ services:
     networks:
       - new-api-network
     ports:
-      - "3306"  # Uncomment if you need to access MySQL from outside Docker
+#      - "3306"  # Uncomment if you need to access MySQL from outside Docker
 
 volumes:
   pg_data:
